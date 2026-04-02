@@ -66,16 +66,70 @@
  */
 export function updateChaiPrice(document, chaiType, newPrice) {
   // Your code here
+  if(typeof newPrice !=="number" || newPrice<=0){
+    return false
+  }
+  if(typeof chaiType !=="string" || chaiType.trim()===""){
+    return false
+  }
+  const priceElement=document.getElementById(`price-${chaiType}`)
+  if(!priceElement){
+    return false
+  }
+  priceElement.textContent=`₹${newPrice}`
+  return true
 }
 
 export function getChaiPrice(document, chaiType) {
   // Your code here
+
+  const ele = document.getElementById(`price-${chaiType}`);
+
+  if(!ele){
+    return null
+  }
+  let priceText=ele.textContent
+  const price=Number(priceText.replace("₹",""))
+
+  return price
 }
 
 export function updateStallName(document, newName) {
   // Your code here
+
+  if(typeof newName!=="string"|| newName.trim()===""){
+    return null
+  }
+  const StallEle=document.querySelector(".stall-name")
+    if(!StallEle){
+    return null
+  }
+  let oldName=StallEle.textContent
+  StallEle.textContent=newName
+  return oldName
 }
 
 export function highlightCheapestChai(document) {
   // Your code here
+  const Prices=document.querySelectorAll(".chai-price")
+  if(Prices.length===0){
+    return null
+  }
+  let minprice=Infinity
+  let cheapestEl=null
+  Prices.forEach((ele)=>{
+   const price=parseFloat(ele.textContent.replace("₹",""))
+   if(price<minprice){
+      minprice=price
+      cheapestEl=ele
+   }
+  })
+ Prices.forEach((ele)=>{
+  ele.classList.remove("cheapest")
+ })
+ if(cheapestEl){
+  cheapestEl.classList.add("cheapest")
+  return cheapestEl.getAttribute("data-chai")
+ }
+ return null
 }
